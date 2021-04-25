@@ -1,0 +1,374 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+
+		<link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400;0,500;0,600;1,600&display=swap" rel="stylesheet">
+
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta http-equiv="X-UA-Compatible" content="ie=edge">
+		<title>
+			
+		</title>
+		<link rel="stylesheet" type="text/css" href="styles/style.css">
+	</head>
+	<body>
+		
+				
+
+<header class="c-header js-header">
+	<div class="c-header-wrapper">
+		<a href="#" class="c-header__logo">
+			    <svg class="el-icon c-header__logo-svg">
+        <use xmlns:xlink="http://www.w3.org/1999/xlink"
+             xlink:href="./images/svg_sprite_inline/sprite_inline.svg#ic-logo"></use>
+    </svg>
+
+		</a>
+		<button class="c-header__menu js-menu">
+			<span class="visually-hidden">
+				Burger menu for mobile
+			</span>
+		</button>
+		<nav class="c-header-nav js-nav ">
+			<button class="c-header-nav__btn js-btn">
+				<span class="visually-hidden">
+					button for close mobile menu
+				</span>
+			</button>
+			<ul class="c-header-nav__list">
+				<li class="c-header-nav__item">
+					<a class="c-header-nav__link isActive" data-nav-item href="#information">Кто мы</a>
+				</li>
+				<li class="c-header-nav__item">
+					<a class="c-header-nav__link" data-nav-item href="#categories">Продукты</a>
+				</li>
+				<li class="c-header-nav__item">
+					<a class="c-header-nav__link" data-nav-item href="#bot">Бот</a>
+				</li>
+				<li class="c-header-nav__item">
+					<a class="c-header-nav__link" data-nav-item href="#contacts">Контакты</a>
+				</li>
+			</ul>
+		</nav>
+	</div>
+</header>
+
+		
+		<main class="t-base"> 	
+    
+
+
+<section class="s-hero" id="information">
+    <div class="s-hero__container">
+        <div class="s-hero__content">
+            <h1 class="el-title">
+                Здоровье это наша жизнь!
+            </h1>
+            <p class="s-hero__content-description">
+               Width Lorem ipsum dolor sit amet, consectetur adipiscing elit. A, sed eu proin faucibus vitae tincidunt dignissim. Quis eu tortor eu tincidunt nullam lectus. Vitae, vestibulum massa nisi ac adipiscing. Pharetra varius ut a elementum.
+            </p>
+        </div>
+        <figure class="s-hero__media">
+            <img src="images/Hero-img-min.png" alt="">
+        </figure>
+    </div>
+</section>
+	<section class="s-text">
+    <div class="s-text__container">
+        <div class="s-text__content">
+            <h2 class="el-title">
+                Вы можете узнать о каждом типе продуктов
+            </h2>
+    
+            <button class="btn">
+                HealthyFriend
+            </button>
+        </div>
+    </div>
+
+</section>
+   
+	<section class="s-categories" id='categories'>
+    <div class="s-categories__container">
+        <nav class="s-categories__nav js-tags">
+            <ul class="s-categories__nav-list">
+
+                <li class="s-categories__nav-item">
+                    <button class="s-categories__nav-btn" data-tag="carbohydrates">
+                        Углеводы
+                    </button>
+                </li>
+                <li class="s-categories__nav-item">
+                    <button class="s-categories__nav-btn" data-tag='proteins'>
+                        Белки
+                    </button>
+                </li>
+
+                <li class="s-categories__nav-item">
+                    <button class="s-categories__nav-btn" data-tag='fats'>
+                        Жиры
+                    </button>
+                </li>
+
+            </ul>
+        </nav>
+
+
+        <ul class="s-categories-list" id="carbohydrates" data-target>
+            <li class="s-categories-item">
+                <a href="#">
+                    <figure class="s-categories-item__media">
+                        <img src="/images/Slider1-min.png" alt="">
+                    </figure>
+                    <p class="s-categories-item__description">
+                        Овощи и фрукты
+                    </p>
+                </a>
+            </li>
+            <li class="s-categories-item">
+                <a href="#">
+                    <figure class="s-categories-item__media">
+                        <img src="/images/banan.png" alt="">
+                    </figure>
+                    <p class="s-categories-item__description">
+                        Сухофрукты
+                    </p>
+                </a>
+            </li>
+
+            <li class="s-categories-item">
+                <a href="#">
+                    <figure class="s-categories-item__media">
+                        <img src="/images/Slider5-min.png" alt="">
+                    </figure>
+                    <p class="s-categories-item__description">
+                        Хлеб, хлебобулочные изделия, мука
+                    </p>
+                </a>
+            </li>
+
+            <li class="s-categories-item">
+                <a href="#">
+                    <figure class="s-categories-item__media">
+                        <img src="/images/crups.png" alt="">
+                    </figure>
+                    <p class="s-categories-item__description">
+                        Крупы
+                    </p>
+                </a>
+            </li>
+
+            <li class="s-categories-item">
+                <a href="#">
+                    <figure class="s-categories-item__media">
+                        <img src="/images/bobs.png" alt="">
+                    </figure>
+                    <p class="s-categories-item__description">
+                        Бобовые
+                    </p>
+                </a>
+            </li>
+        </ul>
+
+        <ul class="s-categories-list" id="proteins" data-target>
+
+            <li class="s-categories-item">
+                <a href="#">
+                    <figure class="s-categories-item__media">
+                        <img src="/images/Slider3-min.png" alt="">
+                    </figure>
+                    <p class="s-categories-item__description">
+                        Рыба
+                    </p>
+                </a>
+            </li>
+
+
+            <li class="s-categories-item">
+                <a href="#">
+                    <figure class="s-categories-item__media">
+                        <img src="/images/greeb.png" alt="">
+                    </figure>
+                    <p class="s-categories-item__description">
+                        Грибы
+                    </p>
+                </a>
+            </li>
+
+
+            <li class="s-categories-item">
+                <a href="#">
+                    <figure class="s-categories-item__media">
+                        <img src="/images/Slider4-min.png" alt="">
+                    </figure>
+                    <p class="s-categories-item__description">
+                        Мясо, субпродукты, птица
+                    </p>
+                </a>
+            </li>
+
+            <li class="s-categories-item">
+                <a href="#">
+                    <figure class="s-categories-item__media">
+                        <img src="/images/aggs.png" alt="">
+                    </figure>
+                    <p class="s-categories-item__description">
+                        Яйца
+                    </p>
+                </a>
+            </li>
+
+            <li class="s-categories-item">
+                <a href="#">
+                    <figure class="s-categories-item__media">
+                        <img src="/images/icra.png" alt="">
+                    </figure>
+                    <p class="s-categories-item__description">
+                        Икра
+                    </p>
+                </a>
+            </li>
+
+
+        </ul>
+
+        <ul class="s-categories-list" id="fats" data-target>
+            <li class="s-categories-item">
+                <a href="#">
+                    <figure class="s-categories-item__media">
+                        <img src="/images/meet.png" alt="">
+                    </figure>
+                    <p class="s-categories-item__description">
+                        Колбаса
+                    </p>
+                </a>
+            </li>
+
+            <li class="s-categories-item">
+                <a href="#">
+                    <figure class="s-categories-item__media">
+                        <img src="/images/fatmeet.png" alt="">
+                    </figure>
+                    <p class="s-categories-item__description">
+                        Мясные консервы и копчености
+                    </p>
+                </a>
+            </li>
+
+            <li class="s-categories-item">
+                <a href="#">
+                    <figure class="s-categories-item__media">
+                        <img src="/images/fat.png" alt="">
+                    </figure>
+                    <p class="s-categories-item__description">
+                        Жиры, маргарин, масло
+                    </p>
+                </a>
+            </li>
+
+            <li class="s-categories-item">
+                <a href="#">
+                    <figure class="s-categories-item__media">
+                        <img src="/images/Slider2-min.png" alt="">
+                    </figure>
+                    <p class="s-categories-item__description">
+                        Молоко и молочные продукты
+                    </p>
+                </a>
+            </li>
+
+            <li class="s-categories-item">
+                <a href="#">
+                    <figure class="s-categories-item__media">
+                        <img src="/images/Nuts.png" alt="">
+                    </figure>
+                    <p class="s-categories-item__description">
+                        Орехи
+                    </p>
+                </a>
+            </li>
+        </ul>
+
+
+    </div>
+</section>
+	<section class="s-bot" id="bot">
+    <div class="s-bot__container">
+        <h2 class="el-title s-bot__title">
+            Вы можете узнать о каждом типе продуктов
+        </h2>
+
+        <div class="s-bot__content">
+            <p>
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. At magnis interdum diam blandit convallis
+                aenean in
+                amet. Commodo morbi arcu morbi senectus senectus.
+
+                Id enim a tristique elementum at non purus vitae quam. Maecenas in nunc sed rutrum dis. Magna odio
+                bibendum
+                iaculis tortor est, ac sollicitudin sollicitudin. Mattis iaculis
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. At magnis interdum diam blandit convallis
+                aenean in
+                amet. Commodo morbi arcu morbi senectus senectus.
+
+                Id enim a tristique elementum at non purus vitae quam. Maecenas in nunc sed rutrum dis. Magna odio
+                bibendum
+                iaculis tortor est, ac sollicitudin sollicitudin. Mattis iaculis
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. At magnis interdum diam blandit convallis
+                aenean in
+                amet. Commodo morbi arcu morbi senectus senectus.
+            </p>
+        </div>
+
+        <buttno class="s-bot__btn btn">
+            HealthyFriend
+        </buttno>
+    </div>
+
+</section>
+	
+	<section class="s-small-bot">
+    <div class="s-small-bot__container">
+        <buttno class="s-small-bot__btn btn">
+            HealthyFriend
+        </buttno>
+    </div>
+</section>
+			</main>
+			<footer class="c-footer" id="contacts">
+    <div class="c-footer__container">
+        <a class="c-footer__link" href="tel:+375256552274">tel:+375256552274</a>
+        <a class="c-footer__link"  href="mailto:ariska.karmanova28@gmail.com">ariska.karmanova28@gmail.com</a>
+        <div class="c-footer__logo">
+            <a class="c-footer__logo-link" href="#">
+                    <svg class="el-icon c-footer__logo-svg">
+        <use xmlns:xlink="http://www.w3.org/1999/xlink"
+             xlink:href="./images/svg_sprite_inline/sprite_inline.svg#ic-facebook"></use>
+    </svg>
+
+            </a>
+            <a class="c-footer__logo-link" href="#">
+                    <svg class="el-icon c-footer__logo-svg">
+        <use xmlns:xlink="http://www.w3.org/1999/xlink"
+             xlink:href="./images/svg_sprite_inline/sprite_inline.svg#ic-instagram"></use>
+    </svg>
+
+            </a>
+            <a class="c-footer__logo-link" href="#">
+                    <svg class="el-icon c-footer__logo-svg">
+        <use xmlns:xlink="http://www.w3.org/1999/xlink"
+             xlink:href="./images/svg_sprite_inline/sprite_inline.svg#ic-telegram"></use>
+    </svg>
+
+            </a>
+
+        </div>
+    </div>
+</footer>
+			
+				<script src="./js/scripts.js"></script>
+			
+
+		</body>
+	</html>

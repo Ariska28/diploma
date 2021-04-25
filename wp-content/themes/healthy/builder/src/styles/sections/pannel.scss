@@ -1,0 +1,19 @@
+.s-pannel {
+    background-color: $c-brand;
+
+    &__container {
+        @extend .l-container;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        height: $s-header-height;
+    }
+
+    &__link {
+        color: $c-white;
+        &-svg {
+            transform: rotate(180deg);
+            font-size: px-to-rem(30);
+        }
+    }
+}
