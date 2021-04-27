@@ -47,7 +47,6 @@ app = {
 }
 
 
-///////
 bot.onText(/\/start/, msg => {
   const textmessege = `Привет, ${msg.from.first_name}! \n${text.greeting}`;
   bot.sendMessage(helper.getChatId(msg), textmessege, {
@@ -56,7 +55,7 @@ bot.onText(/\/start/, msg => {
     }
   })
 })
-////////
+
 
 bot.on('message', msg => {
   const chatId = helper.getChatId(msg);
@@ -215,8 +214,6 @@ bot.on('message', msg => {
   }
 
 
-
-
   if (txt.toLowerCase() === "нет" || txt.toLowerCase() === "не") {
     bot.sendMessage(chatId, 'Очень жаль..', {
       reply_markup: {
@@ -224,7 +221,6 @@ bot.on('message', msg => {
       }
     })
   }
-
 
 });
 
@@ -265,8 +261,6 @@ function Iniq(chatId) {
   })
 }
 
-
-//выборка нескольких данных
 function sendReciepceByQuery(chatId, query) {
   Reciept.find(query).then(reciepts => {
 
@@ -278,7 +272,6 @@ function sendReciepceByQuery(chatId, query) {
   })
 }
 
-//отправка HTML строк
 function sendHTML(chatId, html) {
   const options = {
     parse_mode: 'HTML'

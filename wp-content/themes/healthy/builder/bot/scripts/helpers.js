@@ -7,7 +7,6 @@ module.exports = {
         return msg.chat.id;
     },
 
-    
     getItemUuId(source) {
         return source.substr(2, source.length)
     }
