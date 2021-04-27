@@ -1,6 +1,7 @@
 const TelegramBot = require('node-telegram-bot-api');
 const mongoose = require('mongoose');
 const config = require('./config');
+const text = require('./text');
 const helper = require('./helpers');
 const kb = require('./keyboard-buttons');
 const keyboard = require('./keyboard');
@@ -12,297 +13,428 @@ const bot = new TelegramBot(config.token, {
   polling: true
 });
 
-//соединяемся с бд
+
 mongoose.connect(config.DB_URL, {
-    useMongoClient: true
-  }).then(() => console.log('MongoDB connected')).catch((err => console.log(err)))
+  useMongoClient: true
+}).then(() => console.log('MongoDB connected')).catch((err => console.log(err)))
 
 //создаём и подключаем модель
-require('./models/film.model');
-const Film = mongoose.model('films');
+require('./models/reciept.model');
+const Reciept = mongoose.model('reciepts');
 
 //заполняем базу данных
-// database.films.forEach(f=> new Film(f).save().catch(e=> console.log(e)))
+//database.reciepts.forEach(f => new Reciept(f).save().catch(e=> console.log(e)))
+
+app = {
+  young: false,
+  adult: false,
+  elderly: false,
+
+  slimming: false,
+  sustentation: false,
+  weight: false,
+
+  vegan: false,
+  meet: false,
+
+  uId: 'uId is Empty',
+
+  breakfast: false,
+  dinner: false,
+  supper: false,
+
+  html: '',
+}
 
 
-//обработка сообщений, которые получил бот
+///////
+bot.onText(/\/start/, msg => {
+  const textmessege = `Привет, ${msg.from.first_name}! \n${text.greeting}`;
+  bot.sendMessage(helper.getChatId(msg), textmessege, {
+    reply_markup: {
+      keyboard: keyboard.start
+    }
+  })
+})
+////////
+
 bot.on('message', msg => {
   const chatId = helper.getChatId(msg);
-  switch (msg.text) {
-    case kb.home.favourite:
-      break
+  const txt = msg.text;
 
-    case kb.home.films:
-      bot.sendMessage(chatId, `Выберите жанр: `, {
+  switch (txt) {
+    case kb.start.yeas:
+      bot.sendMessage(chatId, text.agreed, {
         reply_markup: {
-          keyboard: keyboard.films
+          keyboard: keyboard.ages
         }
       })
       break
 
-    case kb.film.comedy:
-      sendFilmsByQuery(chatId, {
-        type: 'comedy'
-      });
-      break
-
-    case kb.film.action:
-      sendFilmsByQuery(chatId, {
-        type: 'action'
-      });
-      break
-
-    case kb.film.rendom:
-      sendFilmsByQuery(chatId, {});
-      break
-
-    case kb.home.cinemas:
+    case kb.start.no:
+      bot.sendMessage(chatId, text.renouncement, {
+        reply_markup: {
+          remove_keyboard: true
+        }
+      })
       break
 
     case kb.back:
-      bot.sendMessage(chatId, `Что хотите посмотреть?`, {
+      bot.sendMessage(chatId, text.return, {
         reply_markup: {
-          keyboard: keyboard.home
+          keyboard: keyboard.start
         }
       })
       break
+
+    case kb.eat.breakfast:
+      app.breakfast = true,
+        app.dinner = false,
+        app.supper = false,
+
+        Iniq(chatId)
+      break
+
+    case kb.eat.dinner:
+      app.breakfast = false,
+        app.dinner = true,
+        app.supper = false,
+
+        Iniq(chatId)
+      break
+
+
+    case kb.eat.supper:
+      app.breakfast = false,
+        app.dinner = false,
+        app.supper = true,
+
+        Iniq(chatId)
+      break
+
+
+    case kb.eat.back:
+      bot.sendMessage(chatId, app.html,{
+        parse_mode: 'HTML'
+      })
+      break
+
+      //case questions
+    case kb.age.young:
+      app.young = true;
+      app.adult = false;
+      app.elderly = false;
+      bot.sendMessage(chatId, text.questionGoal, {
+        reply_markup: {
+          keyboard: keyboard.goals,
+          one_time_keyboard: true
+        }
+      })
+      break
+
+    case kb.age.adult:
+      app.young = false;
+      app.adult = true;
+      app.elderly = false;
+      bot.sendMessage(chatId, text.questionGoal, {
+        reply_markup: {
+          keyboard: keyboard.goals,
+          one_time_keyboard: true
+        }
+      })
+      break
+
+    case kb.age.elderly:
+      app.young = false;
+      app.adult = false;
+      app.elderly = true;
+      bot.sendMessage(chatId, text.questionGoal, {
+        reply_markup: {
+          keyboard: keyboard.goals,
+          one_time_keyboard: true
+        }
+      })
+      break
+
+    case kb.goal.slimming:
+      app.slimming = true;
+      app.sustentation = false;
+      app.weight = false;
+      bot.sendMessage(chatId, text.questionType, {
+        reply_markup: {
+          keyboard: keyboard.types,
+          one_time_keyboard: true
+        }
+
+      })
+      break
+
+    case kb.goal.sustentation:
+      app.slimming = false;
+      app.sustentation = true;
+      app.weight = false;
+      bot.sendMessage(chatId, text.questionType, {
+        reply_markup: {
+          keyboard: keyboard.types,
+          one_time_keyboard: true
+        }
+
+      })
+      break
+
+    case kb.goal.weight:
+      app.slimming = false;
+      app.sustentation = false;
+      app.weight = true;
+      bot.sendMessage(chatId, text.questionType, {
+        reply_markup: {
+          keyboard: keyboard.types,
+          one_time_keyboard: true
+        }
+
+      })
+      break
+
+    case kb.type.vegan:
+      app.vegan = true;
+      app.meet = false;
+      bot.sendMessage(chatId, text.thanks, {})
+      break
+
+    case kb.type.meet:
+      app.meet = true;
+      app.vegan = false;
+      bot.sendMessage(chatId, text.thanks, {})
+      break
+
   }
+
+  if (txt.toLowerCase() === "да") {
+    conditions(chatId);
+
+  }
+
+
+
+
+  if (txt.toLowerCase() === "нет" || txt.toLowerCase() === "не") {
+    bot.sendMessage(chatId, 'Очень жаль..', {
+      reply_markup: {
+        remove_keyboard: true
+      }
+    })
+  }
+
+
 });
 
 
-//обработка ссылок на данный фильм (отделеление нужной ссылки)
 bot.onText(/\/f(.+)/, (msg, [source, match]) => {
-  const filmUuid = helper.getItemUuId(source);
+  app.uId = helper.getItemUuId(source);
   const chatId = helper.getChatId(msg);
-  console.log(filmUuid);
+  // console.log(app.uId);
 
-  Film.findOne({ uuid: filmUuid }).then( film => {
-    const caption = `Название: ${film.name}\nГод: ${film.year}`
-    bot.sendPhoto(chatId, film.picture, {
-      caption: caption,
-      reply_markup: {
-        inline_keyboard: [
-          [
-            {
-              text: 'Добавить в избранное',
-              callback_data: 'ашдь'
-            },
-            {
-              text: 'Показать кинотеатры',
-              callback_data: 'цвы'
-            }
-          ],
-
-          [
-            {
-              text: `Кинопоиск ${film.name}`,
-              url : 'https://github.com/yagop/node-telegram-bot-api/issues/787'
-
-            }
-          ]
-        ]
-      }
-    } )
-  })
-})
-
-//обработка первого события: //start
-bot.onText(/\/start/, msg => {
-  const text = `Привет, ${msg.from.first_name}!`;
-  bot.sendMessage(helper.getChatId(msg), text, {
+  bot.sendMessage(chatId, text.choose, {
     reply_markup: {
-      keyboard: keyboard.home
+      keyboard: keyboard.eating
     }
   })
 })
 
+function Iniq(chatId) {
+  Reciept.findOne({
+    uuid: app.uId
+  }).then(reciept => {
+    if (app.breakfast) {
+      bot.sendPhoto(chatId, reciept.lanch.img, {
+        caption: reciept.lanch.text,
+      })
+    }
 
+    if (app.dinner) {
+      bot.sendPhoto(chatId, reciept.dinner.img, {
+        caption: reciept.dinner.text,
+      })
+    }
 
+    if (app.supper) {
+      bot.sendPhoto(chatId, reciept.supper.img, {
+        caption: reciept.supper.text,
+      })
+    }
+  })
+}
 
-//--------------------------------
 
 //выборка нескольких данных
-function sendFilmsByQuery(chatId, query) {
-  Film.find(query).then(films => {
-    // console.log(films);
+function sendReciepceByQuery(chatId, query) {
+  Reciept.find(query).then(reciepts => {
 
-    const html = films.map((f, i) => {
-      return `<b>${i + 1}</b> ${f.name} - /f${f.uuid}`
+    app.html = reciepts.map((f, i) => {
+      return `<b>${i + 1}</b> - /f${f.uuid} \n${f.description} `
     }).join('\n')
 
-    sendHTML(chatId, html, 'films');
+    sendHTML(chatId, app.html, 'reciepts');
   })
 }
 
 //отправка HTML строк
-function sendHTML(chatId, html, kbName = null) {
+function sendHTML(chatId, html) {
   const options = {
     parse_mode: 'HTML'
   }
-
-  if (kbName) {
-    options['reply_markup'] = {
-      keyboard: keyboard[kbName]
-    }
-  }
-
   bot.sendMessage(chatId, html, options)
-
 }
 
-//console.log(ошибка)
-// bot.on("polling_error", console.log);
 
-//-------------------------------
+function conditions(chatId) {
+  //yang
+  if (app.vegan && app.slimming && app.young) {
+    sendReciepceByQuery(chatId, {
+      age: "молодой",
+      goal: "снижение",
+      category: "веган"
+    })
+  }
+
+  if (app.vegan && app.sustentation && app.young) {
+    sendReciepceByQuery(chatId, {
+      age: "молодой",
+      goal: "поддержка",
+      category: "веган"
+    })
+  }
+
+  if (app.vegan && app.weight && app.young) {
+    sendReciepceByQuery(chatId, {
+      age: "молодой",
+      goal: "масса",
+      category: "веган"
+    })
+  }
+
+  if (app.meet && app.slimming && app.young) {
+    sendReciepceByQuery(chatId, {
+      age: "молодой",
+      goal: "снижение",
+      category: "норм"
+    })
+  }
+
+  if (app.meet && app.sustentation && app.young) {
+    sendReciepceByQuery(chatId, {
+      age: "молодой",
+      goal: "поддержка",
+      category: "норм"
+    })
+  }
+
+  if (app.meet && app.weight && app.young) {
+    sendReciepceByQuery(chatId, {
+      age: "молодой",
+      goal: "масса",
+      category: "норм"
+    })
+  }
+
+  //adalt
+
+  if (app.vegan && app.slimming && app.adult) {
+    sendReciepceByQuery(chatId, {
+      age: "средний",
+      goal: "снижение",
+      category: "веган"
+    })
+  }
+
+  if (app.vegan && app.sustentation && app.adult) {
+    sendReciepceByQuery(chatId, {
+      age: "средний",
+      goal: "поддержка",
+      category: "веган"
+    })
+  }
+
+  if (app.vegan && app.weight && app.adult) {
+    sendReciepceByQuery(chatId, {
+      age: "средний",
+      goal: "масса",
+      category: "веган"
+    })
+  }
+
+  if (app.meet && app.slimming && app.adult) {
+    sendReciepceByQuery(chatId, {
+      age: "средний",
+      goal: "снижение",
+      category: "норм"
+    })
+  }
+
+  if (app.meet && app.sustentation && app.adult) {
+    sendReciepceByQuery(chatId, {
+      age: "средний",
+      goal: "поддержка",
+      category: "норм"
+    })
+  }
+
+  if (app.meet && app.weight && app.adult) {
+    sendReciepceByQuery(chatId, {
+      age: "средний",
+      goal: "масса",
+      category: "норм"
+    })
+  }
 
 
-//отправка картинок и подписи
-// bot.onText(/\/test/, (msg, [source, match]) => {
-//     const chatId = msg.chat.id;
+  //elderly
 
-//     bot.sendPhoto(chatId,'./bot_img/meet.png', {
-//        caption: 'Это колбаса. Её кушать ненужно' 
-//     } )
-// })
+  if (app.vegan && app.slimming && app.elderly) {
+    sendReciepceByQuery(chatId, {
+      age: "приклонный",
+      goal: "снижение",
+      category: "веган"
+    })
+  }
 
-//отправка видео
-// bot.onText(/\/video/, msg => {
-//     const chatId = msg.chat.id;
+  if (app.vegan && app.sustentation && app.elderly) {
+    sendReciepceByQuery(chatId, {
+      age: "приклонный",
+      goal: "поддержка",
+      category: "веган"
+    })
+  }
 
-//     bot.sendMessage(chatId, 'Я отправляю вам видео...');
-//     bot.sendVideo(chatId, "https://dump.video/i/nGZsAH.mp4", {
-//         caption: 'Видео, где собачке чешут ушко'
-//     })
-// })
+  if (app.vegan && app.weight && app.elderly) {
+    sendReciepceByQuery(chatId, {
+      age: "приклонный",
+      goal: "масса",
+      category: "веган"
+    })
+  }
 
-//отправка контакта(телефон)
-// bot.onText(/\/get_contact/, msg => {
-//     const chatId = msg.chat.id;
-//     bot.sendContact(chatId, "375256552274", 'Карманыш', {
+  if (app.meet && app.slimming && app.elderly) {
+    sendReciepceByQuery(chatId, {
+      age: "приклонный",
+      goal: "снижение",
+      category: "норм"
+    })
+  }
 
-//     })
-// })
+  if (app.meet && app.sustentation && app.elderly) {
+    sendReciepceByQuery(chatId, {
+      age: "приклонный",
+      goal: "поддержка",
+      category: "норм"
+    })
+  }
 
-
-// bot.on('message', (msg) => {
-//     const {
-//         id
-//     } = msg.chat;
-
-//     if (msg.text.toLowerCase() === "привет") {
-//         bot.sendMessage(id, `Привет, ${msg.from.first_name}!`);
-//     }
-
-//     if (msg.text === 'Закрыть') {
-//         bot.sendMessage(id, 'Закрыть клавиатуру', {
-//             reply_markup: {
-//                 remove_keyboard: true
-//             }
-//         })
-//     } else if (msg.text === 'Ответить') {
-
-//         bot.sendMessage(id, 'Отвечаю', {
-//             reply_markup: {
-//                 force_reply: true
-//             }
-//         })
-//     }
-
-//     if (msg.text.toLowerCase() === "клавиатура") {
-//         bot.sendMessage(id, 'клавиатура', {
-//             reply_markup: {
-//                 keyboard: [
-//                     [{
-//                         text: 'Отправить местополодение',
-//                         request_location: true
-//                     }],
-//                     ['Ответить', 'Закрыть'],
-//                     [{
-//                         text: 'Отправить контакт',
-//                         request_contact: true
-//                     }]
-//                 ],
-//                 one_time_keyboard: true //закрыть клавиатуру после использования
-//             }
-
-//         });
-//     }
-
-
- //передача ссылок
-//     if (msg.text.toLowerCase() === "инлайн") {
-//         bot.sendMessage(id, 'инлайн клавиатура', {
-//             reply_markup: {
-//                 inline_keyboard: [
-//                     [{
-//                             text: 'Google',
-//                             url: 'https://www.google.com'
-//                         }
-
-//                     ],
-//                     [{
-//                             text: 'text',
-//                             callback_data: 'text1'
-
-//                         },
-//                         {
-//                             text: 'text2',
-//                             callback_data: 'text2'
-//                         }
-
-//                     ],
-
-//                 ]
-//             }
-
-//         });
-//     }
-
-//     bot.sendMessage(id, msg)
-//         .then(() => {
-//             console.log('Message has been send')
-//         }).catch((error) => {
-//             console.error(error);
-//         });
-// })
-
-//пересылка, ответ на сообщение
-// bot.on('callback_query', query => {
-//     bot.answerCallbackQuery(query.id, `${query.data}`);
-//     const {
-//         chat,
-//         message_id,
-//         text
-//     } = query.message;
-
-//     switch (query.data) {
-//         case 'forward':
-          //куда, откуда, что - параметры функции ниже
-//             bot.forwardMessage(chat.id, chat.id, message_id)
-//             break
-
-//         case 'reply':
-//             bot.sendMessage(chat.id, 'Отвечаем на сообщение', {
-//                 reply_to_message_id: message_id
-//             })
-//             break
-//         case 'edit':
-//             bot.editMessageText(`${text} (редактируем)`, {
-//                 chat_id: chat.id,
-//                 message_id: message_id,
-//                 reply_markup: {inline_keyboard}
-//             })
-//             break
-//         case 'delete':
-//             bot.deleteMessage(chat.id, message_id)
-//             break
-//     }
-
-//     bot.answerCallbackQuery({
-//         callback_query_id: query.id
-//     })
-// })
-
-// function debug(obj = {}) {
-//     return JSON.stringify(obj, null, 4)
-// }
+  if (app.meet && app.weight && app.elderly) {
+    sendReciepceByQuery(chatId, {
+      age: "приклонный",
+      goal: "масса",
+      category: "норм"
+    })
+  }
+}

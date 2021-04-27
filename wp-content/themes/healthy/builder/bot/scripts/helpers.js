@@ -12,3 +12,4 @@ module.exports = {
         return source.substr(2, source.length)
     }
 }
+
